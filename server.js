@@ -34,16 +34,17 @@ function notValidRequest(quote) {
 
 app.put('/quotes/:id', function(request, response) {
   const id = request.params.id  
-  const quoteUpdated = {
-    id: parseInt(id),
-    author: request.body.author,
-    quote: request.body.quote
-  }
-  const quotesFiltered = quotes.filter(function (quote) {
-      return quote.id != id
+  quotes = quotes.map(function (quote) {
+    if (quote.id == id) {
+      return {
+        id: parseInt(id),
+        author: request.body.author,
+        quote: request.body.quote
+      }
+    } else {
+      return quote
+    }
   })
-  quotesFiltered.push(quoteUpdated)
-  quotes = quotesFiltered
 
   response.send({success: true})
 })
